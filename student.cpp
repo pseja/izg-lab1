@@ -10,6 +10,8 @@
  */
 
 #include "base.h"
+#include <cstdint>
+#include <sys/types.h>
 
 /**
  * Example algorithm for color space reduction: Random Ditering.
@@ -58,7 +60,7 @@ void ImageTransform::grayscale()
         for (uint32_t x = 0; x < cfg->w; x++)
         {
             auto p = getPixel(x, y);
-            uint8_t value = std::round(0.299*p.r + 0.587*p.g + 0.114*p.b);
+            uint8_t value = std::round(0.299 * p.r + 0.587 * p.g + 0.114 * p.b);
 
             setPixel(x, y, RGB(value));
         }
@@ -82,7 +84,7 @@ void ImageTransform::threshold()
     //        which channel you use.
 
     uint8_t th = 128;
-    
+
     grayscale();
 
     for (uint32_t y = 0; y < cfg->h; y++)
@@ -122,7 +124,27 @@ void ImageTransform::randomModulation()
 
     uint8_t th = 128;
 
-    // TODO student's work goes here:
+    grayscale();
+
+    for (uint32_t y = 0; y < cfg->h; y++)
+    {
+        for (uint32_t x = 0; x < cfg->w; x++)
+        {
+            auto p = getPixel(x, y);
+
+            int i = std::round(0.299 * p.r + 0.587 * p.g + 0.114 * p.b);
+            auto n = getRandomFromRange(-i, 255 - i);
+
+            if (i - n > th)
+            {
+                setPixel(x, y, COLOR_WHITE);
+            }
+            else
+            {
+                setPixel(x, y, COLOR_BLACK);
+            }
+        }
+    }
 }
 
 /** Task 2.2 variant B
