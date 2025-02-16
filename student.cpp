@@ -82,7 +82,25 @@ void ImageTransform::threshold()
     //        which channel you use.
 
     uint8_t th = 128;
-    // TODO student's work goes here:
+    
+    grayscale();
+
+    for (uint32_t y = 0; y < cfg->h; y++)
+    {
+        for (uint32_t x = 0; x < cfg->w; x++)
+        {
+            auto p = getPixel(x, y);
+
+            if (p.r > th && p.g > th && p.b > th)
+            {
+                setPixel(x, y, COLOR_WHITE);
+            }
+            else
+            {
+                setPixel(x, y, COLOR_BLACK);
+            }
+        }
+    }
 }
 
 /** Task 2.2 variant A
