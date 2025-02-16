@@ -271,7 +271,34 @@ void ImageTransform::errorDistribution()
 
     uint8_t th = 128;
 
-    // TODO student's work goes here:
+    grayscale();
+
+    for (uint32_t y = 0; y < cfg->h; y++)
+    {
+        for (uint32_t x = 0; x < cfg->w; x++)
+        {
+            auto p = getPixel(x, y);
+
+            int i = p.r; // p.r is already computed with empiric equation
+            int g = i > th ? 255 : 0;
+            int e = g == 255 ? i - 255 : i;
+
+            if (x + 1 < cfg->w)
+            {
+                updatePixelWithError(x + 1, y, e * 3.0 / 8.0);
+            }
+            if (y + 1 < cfg->h)
+            {
+                updatePixelWithError(x, y + 1, e * 3.0 / 8.0);
+            }
+            if (x + 1 < cfg->w && y + 1 < cfg->h)
+            {
+                updatePixelWithError(x + 1, y + 1, e * 2.0 / 8.0);
+            }
+
+            setPixel(x, y, g);
+        }
+    }
 }
 
 /** Task 3.1 variant B
