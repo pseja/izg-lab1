@@ -316,7 +316,39 @@ void ImageTransform::FloydSteinbergDithering()
     // Hints: iterate through pixels, get new value as in thresholding, but compute error as well (see lab slides).
     //            Distribute the error to the surrounding pixels according to the figure in lab slides.
     uint8_t th = 128;
-    // TODO student's work goes here:
+
+    grayscale();
+
+    for (uint32_t y = 0; y < cfg->h; y++)
+    {
+        for (uint32_t x = 0; x < cfg->w; x++)
+        {
+            auto p = getPixel(x, y);
+
+            int i = p.r; // p.r is already computed with empiric equation
+            int g = i > th ? 255 : 0;
+            int e = g == 255 ? i - 255 : i;
+
+            if (x + 1 < cfg->w)
+            {
+                updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
+            }
+            if (y + 1 < cfg->h)
+            {
+                updatePixelWithError(x, y + 1, e * 5.0 / 16.0);
+            }
+            if (x + 1 < cfg->w && y + 1 < cfg->h)
+            {
+                updatePixelWithError(x + 1, y + 1, e * 1.0 / 16.0);
+            }
+            if (x - 1 > cfg->w && y + 1 < cfg->h)
+            {
+                updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
+            }
+
+            setPixel(x, y, g);
+        }
+    }
 }
 
 /** Task 3.2
