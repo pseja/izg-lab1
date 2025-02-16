@@ -167,7 +167,28 @@ void ImageTransform::orderedBayerDithering()
     //        Use the modulo operator (%) to achieve this. This ensures that the matrix repeats correctly.
     //        Compare to threshold set new value either to white or black.
 
-    // TODO student's work goes here:
+    grayscale();
+
+    const int matrix_size = 4;
+
+    for (uint32_t y = 0; y < cfg->h; y++)
+    {
+        for (uint32_t x = 0; x < cfg->w; x++)
+        {
+            auto p = getPixel(x, y);
+
+            float th = bayerMatrix4x4[x % matrix_size][y % matrix_size];
+
+            if (p.r / 255.0f > th)
+            {
+                setPixel(x, y, COLOR_WHITE);
+            }
+            else
+            {
+                setPixel(x, y, COLOR_BLACK);
+            }
+        }
+    }
 }
 
 /** Task 2.2 variant C
