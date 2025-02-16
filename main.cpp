@@ -9,10 +9,10 @@
  * This template is for study purposes only, distribution of the code is prohibited without the author's knowledge.
  */
 
-#include <iostream>
-#include <iomanip>
-#include <SDL.h>
 #include "base.h"
+#include <SDL.h>
+#include <iomanip>
+#include <iostream>
 
 #undef main
 
@@ -22,7 +22,7 @@ const std::string outFile = "../data/out.bmp";
 
 void printHelp()
 {
-    auto printElement = [](std::string const& ch, std::string const& msg, int width) {
+    auto printElement = [](std::string const &ch, std::string const &msg, int width) {
         std::cout << std::left << std::setw(width) << std::setfill(' ') << ch << msg << std::endl;
     };
 
@@ -40,73 +40,73 @@ void printHelp()
     printElement("H", "Prints this message", 15);
 }
 
-void onKeyboard(SDL_KeyboardEvent* key, ImageTransform* transform)
+void onKeyboard(SDL_KeyboardEvent *key, ImageTransform *transform)
 {
     switch (key->keysym.sym)
     {
-        case SDLK_ESCAPE:
-        case SDLK_q:
-            IZG_INFO("Stop");
-            transform->cfg->running = false;
-            break;
-        case SDLK_l:
-            if (!transform->loadImage(file))
-                throw std::runtime_error("Failed to load an input image");
-            break;
-        case SDLK_k:
-            if (!transform->loadImage(file2))
-                throw std::runtime_error("Failed to load an input image");
-            break;
-        case SDLK_s:
-            if (!transform->saveImage(outFile))
-                throw std::runtime_error("Failed to save an output image");
-            IZG_INFO("Image saved");
-            break;
-        case SDLK_g:
-            IZG_INFO("Grayscale");
-            transform->grayscale();
-            break;
-        case SDLK_t:
-            IZG_INFO("Thresholding");
-            transform->threshold();
-            break;
-        case SDLK_r:
-            IZG_INFO("Random dithering");
-            transform->randomDithering();
-            break;
-        case SDLK_e:
-            IZG_INFO("Error distribution");
-            transform->errorDistribution();
-            break;
-        case SDLK_w:
-            IZG_INFO("Tone-dependent error distribution");
-            transform->toneDependentErrorDistribution();
-            break;
-        case SDLK_m:
-            IZG_INFO("Random modulation");
-            transform->randomModulation();
-            break;
-        case SDLK_b:
-            IZG_INFO("Bayer dithering");
-            transform->orderedBayerDithering();
-            break;
-        case SDLK_c:
-            IZG_INFO("Clustered-dot dithering");
-            transform->clusteredDotDithering();
-            break;
-        case SDLK_f:
-            IZG_INFO("Floyd-Steinberg dithering");
-            transform->FloydSteinbergDithering();
-            break;
-        case SDLK_h:
-            printHelp();
-            break;
-        default:
-            break;
+    case SDLK_ESCAPE:
+    case SDLK_q:
+        IZG_INFO("Stop");
+        transform->cfg->running = false;
+        break;
+    case SDLK_l:
+        if (!transform->loadImage(file))
+            throw std::runtime_error("Failed to load an input image");
+        break;
+    case SDLK_k:
+        if (!transform->loadImage(file2))
+            throw std::runtime_error("Failed to load an input image");
+        break;
+    case SDLK_s:
+        if (!transform->saveImage(outFile))
+            throw std::runtime_error("Failed to save an output image");
+        IZG_INFO("Image saved");
+        break;
+    case SDLK_g:
+        IZG_INFO("Grayscale");
+        transform->grayscale();
+        break;
+    case SDLK_t:
+        IZG_INFO("Thresholding");
+        transform->threshold();
+        break;
+    case SDLK_r:
+        IZG_INFO("Random dithering");
+        transform->randomDithering();
+        break;
+    case SDLK_e:
+        IZG_INFO("Error distribution");
+        transform->errorDistribution();
+        break;
+    case SDLK_w:
+        IZG_INFO("Tone-dependent error distribution");
+        transform->toneDependentErrorDistribution();
+        break;
+    case SDLK_m:
+        IZG_INFO("Random modulation");
+        transform->randomModulation();
+        break;
+    case SDLK_b:
+        IZG_INFO("Bayer dithering");
+        transform->orderedBayerDithering();
+        break;
+    case SDLK_c:
+        IZG_INFO("Clustered-dot dithering");
+        transform->clusteredDotDithering();
+        break;
+    case SDLK_f:
+        IZG_INFO("Floyd-Steinberg dithering");
+        transform->FloydSteinbergDithering();
+        break;
+    case SDLK_h:
+        printHelp();
+        break;
+    default:
+        break;
     }
 }
 
-void onMouseDown(SDL_MouseMotionEvent* mouse, ImageTransform* transform)
+void onMouseDown(SDL_MouseMotionEvent *mouse, ImageTransform *transform)
 {
     if (mouse->state & SDL_BUTTON_LMASK)
     {
@@ -117,7 +117,7 @@ void onMouseDown(SDL_MouseMotionEvent* mouse, ImageTransform* transform)
 
 int main()
 {
-    Config cfg =  { 800, 600, true };
+    Config cfg = {800, 600, true};
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -148,15 +148,15 @@ int main()
         {
             switch (event.type)
             {
-                case SDL_QUIT:
-                    cfg.running = false;
-                    break;
-                case SDL_KEYDOWN:
-                    onKeyboard(&event.key, &transform);
-                    break;
-                case SDL_MOUSEBUTTONDOWN:
-                    onMouseDown(&event.motion, &transform);
-                    break;
+            case SDL_QUIT:
+                cfg.running = false;
+                break;
+            case SDL_KEYDOWN:
+                onKeyboard(&event.key, &transform);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                onMouseDown(&event.motion, &transform);
+                break;
             }
         }
 
@@ -169,8 +169,8 @@ int main()
             surface = SDL_GetWindowSurface(window);
         }
 
-        auto write = [&](uint32_t x, uint32_t y, RGB const& p) {
-            auto pixels = (uint8_t*)surface->pixels;
+        auto write = [&](uint32_t x, uint32_t y, RGB const &p) {
+            auto pixels = (uint8_t *)surface->pixels;
             auto pixel = pixels + y * surface->pitch + x * surface->format->BytesPerPixel;
             pixel[0] = p.b;
             pixel[1] = p.g;
@@ -179,7 +179,7 @@ int main()
 
         for (uint32_t y = 0; y < cfg.h; y++)
             for (uint32_t x = 0; x < cfg.w; x++)
-                write (x, y, transform.getPixel(x, y));
+                write(x, y, transform.getPixel(x, y));
 
         SDL_UnlockSurface(surface);
         SDL_UpdateWindowSurface(window);
@@ -187,4 +187,4 @@ int main()
 
     SDL_DestroyWindow(window);
     return 0;
-} 
+}
