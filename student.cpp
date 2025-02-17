@@ -283,18 +283,9 @@ void ImageTransform::errorDistribution()
             int g = i > th ? 255 : 0;
             int e = g == 255 ? i - 255 : i;
 
-            if (x + 1 < cfg->w)
-            {
-                updatePixelWithError(x + 1, y, e * 3.0 / 8.0);
-            }
-            if (y + 1 < cfg->h)
-            {
-                updatePixelWithError(x, y + 1, e * 3.0 / 8.0);
-            }
-            if (x + 1 < cfg->w && y + 1 < cfg->h)
-            {
-                updatePixelWithError(x + 1, y + 1, e * 2.0 / 8.0);
-            }
+            updatePixelWithError(x + 1, y, e * 3.0 / 8.0);
+            updatePixelWithError(x, y + 1, e * 3.0 / 8.0);
+            updatePixelWithError(x + 1, y + 1, e * 2.0 / 8.0);
 
             setPixel(x, y, g);
         }
@@ -329,22 +320,10 @@ void ImageTransform::FloydSteinbergDithering()
             int g = i > th ? 255 : 0;
             int e = g == 255 ? i - 255 : i;
 
-            if (x + 1 < cfg->w)
-            {
-                updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
-            }
-            if (x > 0 && y + 1 < cfg->h) // (x - 1 > cfg->w) clears up dark spots of fragments somehow xdd (pseja dithering i guess)
-            {
-                updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
-            }
-            if (y + 1 < cfg->h)
-            {
-                updatePixelWithError(x, y + 1, e * 5.0 / 16.0);
-            }
-            if (x + 1 < cfg->w && y + 1 < cfg->h)
-            {
-                updatePixelWithError(x + 1, y + 1, e * 1.0 / 16.0);
-            }
+            updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
+            updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
+            updatePixelWithError(x, y + 1, e * 5.0 / 16.0);
+            updatePixelWithError(x + 1, y + 1, e * 1.0 / 16.0);
 
             setPixel(x, y, g);
         }
@@ -367,5 +346,43 @@ void ImageTransform::toneDependentErrorDistribution()
 
     uint8_t th = 128;
 
-    // TODO student's work goes here:
+    grayscale();
+
+    for (uint32_t y = 0; y < cfg->h; y++) // Prevent out-of-bounds for diffusion
+    {
+        for (uint32_t x = 0; x < cfg->w; x++) // Prevent out-of-bounds for diffusion
+        {
+            auto p = getPixel(x, y);
+            int i = p.r;
+            int g = (i > th) ? 255 : 0;
+            int e = g == 255 ? i - 255 : i;
+
+            if (i <= 40 || i >= 215)
+            {
+                updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
+
+                updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
+                updatePixelWithError(x, y + 1, e * 5.0 / 16.0);
+                updatePixelWithError(x + 1, y + 1, e * 1.0 / 16.0);
+            }
+            else
+            {
+                updatePixelWithError(x + 1, y, e * 7.0 / 24.0);
+                updatePixelWithError(x + 2, y, e * 2.0 / 24.0);
+
+                updatePixelWithError(x - 2, y - 1, e * 1.0 / 24.0);
+                updatePixelWithError(x - 1, y - 1, e * 3.0 / 24.0);
+                updatePixelWithError(x, y - 1, e * 5.0 / 24.0);
+                updatePixelWithError(x + 1, y - 1, e * 1.0 / 24.0);
+                updatePixelWithError(x + 2, y - 1, e * 0.5 / 24.0);
+
+                updatePixelWithError(x - 2, y - 2, e * 1.0 / 24.0);
+                updatePixelWithError(x - 1, y - 2, e * 1.0 / 24.0);
+                updatePixelWithError(x, y - 2, e * 2.0 / 24.0);
+                updatePixelWithError(x + 1, y - 2, e * 0.5 / 24.0);
+            }
+
+            setPixel(x, y, g);
+        }
+    }
 }
