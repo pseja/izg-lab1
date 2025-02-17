@@ -348,9 +348,9 @@ void ImageTransform::toneDependentErrorDistribution()
 
     grayscale();
 
-    for (uint32_t y = 0; y < cfg->h; y++) // Prevent out-of-bounds for diffusion
+    for (uint32_t y = 0; y < cfg->h; y++)
     {
-        for (uint32_t x = 0; x < cfg->w; x++) // Prevent out-of-bounds for diffusion
+        for (uint32_t x = 0; x < cfg->w; x++)
         {
             auto p = getPixel(x, y);
             int i = p.r;
