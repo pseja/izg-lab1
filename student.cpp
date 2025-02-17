@@ -333,6 +333,10 @@ void ImageTransform::FloydSteinbergDithering()
             {
                 updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
             }
+            if (x > 0 && y + 1 < cfg->h) // (x - 1 > cfg->w) clears up dark spots of fragments somehow xdd (pseja dithering i guess)
+            {
+                updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
+            }
             if (y + 1 < cfg->h)
             {
                 updatePixelWithError(x, y + 1, e * 5.0 / 16.0);
@@ -340,10 +344,6 @@ void ImageTransform::FloydSteinbergDithering()
             if (x + 1 < cfg->w && y + 1 < cfg->h)
             {
                 updatePixelWithError(x + 1, y + 1, e * 1.0 / 16.0);
-            }
-            if (x - 1 > cfg->w && y + 1 < cfg->h)
-            {
-                updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
             }
 
             setPixel(x, y, g);
