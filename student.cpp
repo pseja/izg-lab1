@@ -59,7 +59,7 @@ void ImageTransform::grayscale()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
             uint8_t value = std::round(0.299 * p.r + 0.587 * p.g + 0.114 * p.b);
 
             setPixel(x, y, RGB(value));
@@ -91,9 +91,9 @@ void ImageTransform::threshold()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
 
-            if (p.r > th && p.g > th && p.b > th)
+            if (p.r > th)
             {
                 setPixel(x, y, COLOR_WHITE);
             }
@@ -130,9 +130,9 @@ void ImageTransform::randomModulation()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
 
-            int i = std::round(0.299 * p.r + 0.587 * p.g + 0.114 * p.b);
+            uint8_t i = p.r;
             auto n = getRandomFromRange(-i, 255 - i);
 
             if (i - n > th)
@@ -175,7 +175,7 @@ void ImageTransform::orderedBayerDithering()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
 
             float th = bayerMatrix4x4[x % matrix_size][y % matrix_size];
 
@@ -219,7 +219,7 @@ void ImageTransform::clusteredDotDithering()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
 
             float th = circleBayerMatrix4x4[x % matrix_size][y % matrix_size];
 
@@ -277,11 +277,11 @@ void ImageTransform::errorDistribution()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
+            RGB p = getPixel(x, y);
 
-            int i = p.r; // p.r is already computed with empiric equation
-            int g = i > th ? 255 : 0;
-            int e = g == 255 ? i - 255 : i;
+            uint8_t i = p.r; // p.r is already computed with empiric equation
+            uint8_t g = i > th ? 255 : 0;
+            int e = i - g;
 
             updatePixelWithError(x + 1, y, e * 3.0 / 8.0);
             updatePixelWithError(x, y + 1, e * 3.0 / 8.0);
@@ -318,7 +318,7 @@ void ImageTransform::FloydSteinbergDithering()
 
             int i = p.r; // p.r is already computed with empiric equation
             int g = i > th ? 255 : 0;
-            int e = g == 255 ? i - 255 : i;
+            int e = i - g;
 
             updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
             updatePixelWithError(x - 1, y + 1, e * 3.0 / 16.0);
@@ -352,10 +352,10 @@ void ImageTransform::toneDependentErrorDistribution()
     {
         for (uint32_t x = 0; x < cfg->w; x++)
         {
-            auto p = getPixel(x, y);
-            int i = p.r;
-            int g = (i > th) ? 255 : 0;
-            int e = g == 255 ? i - 255 : i;
+            RGB p = getPixel(x, y);
+            uint8_t i = p.r;
+            uint8_t g = (i > th) ? 255 : 0;
+            int e = i - g;
 
             if (i <= 40 || i >= 215)
             {
