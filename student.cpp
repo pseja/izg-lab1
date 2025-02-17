@@ -316,8 +316,8 @@ void ImageTransform::FloydSteinbergDithering()
         {
             auto p = getPixel(x, y);
 
-            int i = p.r; // p.r is already computed with empiric equation
-            int g = i > th ? 255 : 0;
+            uint8_t i = p.r; // p.r is already computed with empiric equation
+            uint8_t g = i > th ? 255 : 0;
             int e = i - g;
 
             updatePixelWithError(x + 1, y, e * 7.0 / 16.0);
