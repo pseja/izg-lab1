@@ -354,7 +354,7 @@ void ImageTransform::toneDependentErrorDistribution()
         {
             RGB p = getPixel(x, y);
             uint8_t i = p.r;
-            uint8_t g = (i > th) ? 255 : 0;
+            uint8_t g = i > th ? 255 : 0;
             int e = i - g;
 
             if (i <= 40 || i >= 215)
@@ -370,16 +370,16 @@ void ImageTransform::toneDependentErrorDistribution()
                 updatePixelWithError(x + 1, y, e * 7.0 / 24.0);
                 updatePixelWithError(x + 2, y, e * 2.0 / 24.0);
 
-                updatePixelWithError(x - 2, y - 1, e * 1.0 / 24.0);
-                updatePixelWithError(x - 1, y - 1, e * 3.0 / 24.0);
-                updatePixelWithError(x, y - 1, e * 5.0 / 24.0);
-                updatePixelWithError(x + 1, y - 1, e * 1.0 / 24.0);
-                updatePixelWithError(x + 2, y - 1, e * 0.5 / 24.0);
+                updatePixelWithError(x - 2, y + 1, e * 1.0 / 24.0);
+                updatePixelWithError(x - 1, y + 1, e * 3.0 / 24.0);
+                updatePixelWithError(x, y + 1, e * 5.0 / 24.0);
+                updatePixelWithError(x + 1, y + 1, e * 1.0 / 24.0);
+                updatePixelWithError(x + 2, y + 1, e * 0.5 / 24.0);
 
-                updatePixelWithError(x - 2, y - 2, e * 1.0 / 24.0);
-                updatePixelWithError(x - 1, y - 2, e * 1.0 / 24.0);
-                updatePixelWithError(x, y - 2, e * 2.0 / 24.0);
-                updatePixelWithError(x + 1, y - 2, e * 0.5 / 24.0);
+                updatePixelWithError(x - 2, y + 2, e * 1.0 / 24.0);
+                updatePixelWithError(x - 1, y + 2, e * 1.0 / 24.0);
+                updatePixelWithError(x, y + 2, e * 2.0 / 24.0);
+                updatePixelWithError(x + 1, y + 2, e * 0.5 / 24.0);
             }
 
             setPixel(x, y, g);
