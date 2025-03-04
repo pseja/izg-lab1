@@ -17,6 +17,7 @@ With Ubuntu, you'll also need to install [libsdl2](https://packages.ubuntu.com/e
 
 ```sh
 git clone git@github.com:pseja/izg-lab1.git
+cd izg-lab1
 git submodule update --init --recursive
 mkdir build
 cd build/
