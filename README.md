@@ -1,7 +1,8 @@
 # Color Space Reduction
 
 Author: Lukáš Pšeja
-xLogin: xpsejal00
+
+xlogin: xpsejal00
 
 ## Assignment
 1. Convert a color image to grayscale (0.5 points)
