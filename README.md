@@ -1,22 +1,39 @@
-# Navod ke kompilaci
-- Ke kompilaci je pozadovano Visual Studio 2019 nebo GCC 7.0.0+ a CMake 3.12.0+
+# Color Space Reduction
 
-## Linux
-- mkdir build
-- cd build/
-- cmake ..
-- make -j 4
+Author: Lukáš Pšeja
+xLogin: xpsejal00
 
-V případě problémů se spuštěním zkontrolujte, zda máte požadované závislosti pro renderování pomocí SDL, zejména ověřte aktuálnost grafických ovladačů. SDL není potřeba instalovat, je přibaleno ke kostře programu. Kompletní závislosti pro Ubuntu 20.04 lze nalézt zde:
+## Assignment
+1. Convert a color image to grayscale (0.5 points)
+2. Convert to black-and-white using thresholding (0.75 points)
+3. Convert to black-and-white using random modulation thresholding or any order-based dithering method (0.5 points)
+4. Convert to black-and-white using error diffusion or the Floyd-Steinberg algorithm (0.75 points)
+5. Convert to black-and-white using tone-dependent error diffusion (0.5 points)
 
-https://packages.ubuntu.com/en/source/focal/libsdl2
+## Setup
+To compile this application, you'll need GCC 7.0.0+ and CMake 3.12.0+.
+With Ubuntu, you'll also need to install [libsdl2](https://packages.ubuntu.com/en/source/focal/libsdl2).
 
-Většina balíčků je již součástí základního systému, překladače či grafického ovladače, avšak na některých distribucích mohou některé chybět a způsobovat pády.
-## Windows
-- Spuste CMake GUI
-- Stistknete Browse Source a vyberte slozku s rozbalenym cvicenim
-- Stistknete Browse Build a vyberte stejnou adresu s priponou build/, tzn. napr. cestaKeSlozce/izg_lab_01/build/
-- Kliknete na Configure
-- Nasledne kliknete na Generate
-- Kliknete na Open Project, nebo ve slozce build/ nyni bude soubor izg_lab_01.sln, pres ten spustte Visual Studio
-- Nasledne lze jiz primo sestavit aplikaci a spustit
+```sh
+git clone git@github.com:pseja/izg-lab1.git
+git submodule update --init --recursive
+mkdir build
+cd build/
+cmake ..
+make
+./izg_lab_01
+```
+
+## Usage
+| **Key/Button**   | **Action**                                                                                                                     |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Left Mouse Click | Prints the value of the selected pixel to the console.                                                                         |
+| L                | Loads a test gradient image.                                                                                                   |
+| K                | Loads a test image of an automobile.                                                                                           |
+| S                | Saves the current window as a BMP file in `/data/out.bmp`.                                                                     |
+| G                | Converts the image to grayscale.                                                                                               |
+| R                | Converts the image to black-and-white using random dithering algorithm.                                                        |
+| T                | Converts the image to black-and-white using thresholding.                                                                      |
+| M, B, C          | Converts the image to black-and-white using random modulation, ordered Bayer dithering, or clustered-dot dithering algorithms. |
+| E, F             | Converts the image to black-and-white using error diffusion or Floyd-Steinberg algorithm.                                      |
+| W                | Converts the image to black-and-white using tone-dependent error diffusion.                                                    |
