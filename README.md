@@ -2,7 +2,9 @@
 
 Author: Lukáš Pšeja
 
-xlogin: xpsejal00
+Login: xpsejal00
+
+Points: 3/3
 
 ## Assignment
 1. Convert a color image to grayscale (0.5 points)
